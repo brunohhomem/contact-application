@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { getContacts } from './api/ContactService'
+import { getContacts, saveContact, updatePhoto } from './api/ContactService'
 import Header from './components/Header'
 import './App.css'
 import ContactList from './components/ContactList'
@@ -25,7 +25,6 @@ function App() {
       setCurrentPage(page)
       const { data } = await getContacts(page, size)
       setData(data)
-      console.log(data)
     } catch (error) {
       console.log(error)
     }
@@ -33,7 +32,31 @@ function App() {
 
   const onChange = event => {
     setValues({ ...values, [event.target.name]: event.target.value })
-    console.log(values)
+  }
+
+  const handleNewContact = async event => {
+    event.preventDefault()
+    try {
+      const { data } = await saveContact(values)
+      const formData = new FormData()
+      formData.append('file', file, file.name)
+      formData.append('id', data.id)
+      const { data: photoUrl } = await updatePhoto(formData)
+      toggleModal(false)
+      setFile(undefined)
+      fileRef.current.value = null
+      setValues({
+        name: '',
+        email: '',
+        phone: '',
+        address: '',
+        title: '',
+        status: ''
+      })
+      getAllContacts()
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   const toggleModal = show =>
@@ -72,8 +95,7 @@ function App() {
         </div>
         <div className="divider"></div>
         <div className="modal__body">
-          {/* <form onSubmit={handleNewContact}> */}
-          <form>
+          <form onSubmit={handleNewContact}>
             <div className="user-details">
               <div className="input-box">
                 <span className="details">Name</span>
