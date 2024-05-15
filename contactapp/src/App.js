@@ -4,6 +4,7 @@ import { getContacts, saveContact, updatePhoto } from './api/ContactService'
 import Header from './components/Header'
 import './App.css'
 import ContactList from './components/ContactList'
+import ContactDetail from './components/ContactDetail'
 
 function App() {
   const modalRef = useRef()
@@ -29,6 +30,10 @@ function App() {
       console.log(error)
     }
   }
+
+  const updateContact = async () => {}
+
+  const updateImage = async () => {}
 
   const onChange = event => {
     setValues({ ...values, [event.target.name]: event.target.value })
@@ -80,6 +85,15 @@ function App() {
                   data={data}
                   currentPage={currentPage}
                   getAllContacts={getAllContacts}
+                />
+              }
+            />
+            <Route
+              path="/contacts/:id"
+              element={
+                <ContactDetail
+                  updateContact={updateContact}
+                  updateImage={updateImage}
                 />
               }
             />
