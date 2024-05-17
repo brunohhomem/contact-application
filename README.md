@@ -2,3 +2,4 @@
 
 - ReactJS
 - SpringBoot
+- PostGreSQL
