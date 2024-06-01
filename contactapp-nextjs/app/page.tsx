@@ -1,5 +1,9 @@
-import Image from 'next/image'
+import Contacts from '@/pages/Contacts'
 
 export default function Home() {
-  return <h1>olá mundo</h1>
+  return (
+    <main>
+      <Contacts />
+    </main>
+  )
 }
